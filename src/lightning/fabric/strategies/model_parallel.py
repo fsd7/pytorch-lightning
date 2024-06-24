@@ -329,10 +329,10 @@ class _FSDPNoSync(ContextManager):
         self._enabled = enabled
 
     def _set_requires_grad_sync(self, requires_grad_sync: bool) -> None:
-        from torch.distributed._composable.fsdp import FSDP
+        from torch.distributed._composable.fsdp import FSDPModule
 
         for mod in self._module.modules():
-            if isinstance(mod, FSDP):
+            if isinstance(mod, FSDPModule):
                 mod.set_requires_gradient_sync(requires_grad_sync, recurse=False)
 
     def __enter__(self) -> None:

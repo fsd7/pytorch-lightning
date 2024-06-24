@@ -119,12 +119,12 @@ def test_parallelize_fn_call():
 @RunIf(min_torch="2.3")
 def test_no_backward_sync():
     """Test that the backward sync control disables gradient sync on modules that benefit from it."""
-    from torch.distributed._composable.fsdp import FSDP
+    from torch.distributed._composable.fsdp import FSDPModule
 
     strategy = ModelParallelStrategy(parallelize_fn=(lambda m, _: m))
     assert isinstance(strategy._backward_sync_control, _ParallelBackwardSyncControl)
 
-    fsdp_layer = Mock(spec=FSDP)
+    fsdp_layer = Mock(spec=FSDPModule)
     other_layer = nn.Linear(2, 2)
     module = Mock()
     module.modules = Mock(return_value=[fsdp_layer, other_layer])
