@@ -22,8 +22,8 @@ from typing_extensions import override
 
 from lightning.fabric.plugins.precision.precision import Precision
 from lightning.fabric.plugins.precision.utils import _convert_fp_tensor
-from lightning.fabric.utilities.types import Optimizable
 from lightning.fabric.utilities.imports import _TORCH_GREATER_EQUAL_2_4
+from lightning.fabric.utilities.types import Optimizable
 
 
 class MixedPrecision(Precision):
