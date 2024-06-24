@@ -45,7 +45,7 @@ jobs:
         timeout-minutes: 20
         run: |
           # TODO: investigate hanging installation with app sub-package
-          pip install -e '.[pytorch-all,fabric-all]' -r requirements/typing.txt
+          pip install -e '.[pytorch-all,fabric-all]' -r requirements/typing.txt --find-links="https://download.pytorch.org/whl/test/cpu/torch"
           pip list
 
       - name: Check typing
