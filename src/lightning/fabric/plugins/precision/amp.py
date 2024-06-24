@@ -23,6 +23,7 @@ from typing_extensions import override
 from lightning.fabric.plugins.precision.precision import Precision
 from lightning.fabric.plugins.precision.utils import _convert_fp_tensor
 from lightning.fabric.utilities.types import Optimizable
+from lightning.fabric.utilities.imports import _TORCH_GREATER_EQUAL_2_4
 
 
 class MixedPrecision(Precision):
@@ -49,7 +50,7 @@ class MixedPrecision(Precision):
 
         self.precision = precision
         if scaler is None and self.precision == "16-mixed":
-            scaler = torch.amp.GradScaler(device=device)
+            scaler = torch.amp.GradScaler(device=device) if _TORCH_GREATER_EQUAL_2_4 else torch.cuda.amp.GradScaler()
         if scaler is not None and self.precision == "bf16-mixed":
             raise ValueError(f"`precision='bf16-mixed'` does not use a scaler, found {scaler}.")
         self.device = device
