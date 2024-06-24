@@ -113,7 +113,7 @@ def _runif_reasons(
         kwargs["standalone"] = True
 
     if deepspeed and not (
-        _DEEPSPEED_AVAILABLE and RequirementCache(module="deepspeed.utils") and not _TORCH_GREATER_EQUAL_2_4
+        _DEEPSPEED_AVAILABLE and not _TORCH_GREATER_EQUAL_2_4 and RequirementCache(module="deepspeed.utils")
     ):
         reasons.append("Deepspeed")
 
