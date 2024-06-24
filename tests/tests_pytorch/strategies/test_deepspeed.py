@@ -28,7 +28,7 @@ from lightning.pytorch.callbacks import Callback, LearningRateMonitor, ModelChec
 from lightning.pytorch.demos.boring_classes import BoringModel, RandomDataset, RandomIterableDataset
 from lightning.pytorch.loggers import CSVLogger
 from lightning.pytorch.plugins import DeepSpeedPrecision
-from lightning.pytorch.strategies.deepspeed import _DEEPSPEED_AVAILABLE, DeepSpeedStrategy
+from lightning.pytorch.strategies.deepspeed import DeepSpeedStrategy
 from lightning.pytorch.utilities.exceptions import MisconfigurationException
 from lightning.pytorch.utilities.imports import _TORCHMETRICS_GREATER_EQUAL_0_11 as _TM_GE_0_11
 from torch import Tensor, nn
@@ -241,7 +241,6 @@ def test_deepspeed_run_configure_optimizers(tmp_path):
     """Test end to end that deepspeed works with defaults (without ZeRO as that requires compilation), whilst using
     configure_optimizers for optimizers and schedulers."""
     from deepspeed.runtime.zero.stage_1_and_2 import DeepSpeedZeroOptimizer
-
 
     class TestCB(Callback):
         def on_train_start(self, trainer, pl_module) -> None:
