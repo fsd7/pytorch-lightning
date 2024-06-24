@@ -95,8 +95,8 @@ class ModelParallelStrategy(ParallelStrategy):
         timeout: Optional[timedelta] = default_pg_timeout,
     ) -> None:
         super().__init__()
-        if not _TORCH_GREATER_EQUAL_2_3:
-            raise ImportError(f"{type(self).__name__} requires PyTorch 2.3 or higher.")
+        if not _TORCH_GREATER_EQUAL_2_4:
+            raise ImportError(f"{type(self).__name__} requires PyTorch 2.4 or higher.")
         self._parallelize_fn = parallelize_fn
         self._data_parallel_size = data_parallel_size
         self._tensor_parallel_size = tensor_parallel_size
@@ -178,7 +178,7 @@ class ModelParallelStrategy(ParallelStrategy):
         if any(isinstance(mod, FullyShardedDataParallel) for mod in module.modules()):
             raise TypeError(
                 "Found modules that are wrapped with `torch.distributed.fsdp.FullyShardedDataParallel`."
-                f" The `{self.__class__.__name__}` only supports the new FSDP2 APIs in PyTorch >= 2.3."
+                f" The `{self.__class__.__name__}` only supports the new FSDP2 APIs in PyTorch >= 2.4."
             )
 
         module = self._parallelize_fn(module, self.device_mesh)
