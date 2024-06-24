@@ -82,7 +82,7 @@ def test_amp_fused_optimizer_parity():
         optimizer = torch.optim.Adam(model.parameters(), lr=1.0, fused=fused)
 
         model, optimizer = fabric.setup(model, optimizer)
-        assert isinstance(fabric._precision.scaler, torch.cuda.amp.GradScaler)
+        assert isinstance(fabric._precision.scaler, torch.amp.GradScaler)
 
         data = torch.randn(10, 10, device="cuda")
         target = torch.randn(10, 10, device="cuda")

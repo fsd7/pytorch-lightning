@@ -28,7 +28,7 @@ class FusedOptimizerParityModel(BoringModel):
         self.fused = fused
 
     def configure_optimizers(self):
-        assert isinstance(self.trainer.precision_plugin.scaler, torch.cuda.amp.GradScaler)
+        assert isinstance(self.trainer.precision_plugin.scaler, torch.amp.GradScaler)
         return torch.optim.Adam(self.parameters(), lr=1.0, fused=self.fused)
 
 
