@@ -227,28 +227,6 @@ def test_save_checkpoint_one_dist_module_required(tmp_path):
 
 
 @RunIf(min_torch="2.4")
-@mock.patch("lightning.fabric.strategies.model_parallel.torch.load", Mock())
-@mock.patch("lightning.fabric.strategies.model_parallel._TORCH_GREATER_EQUAL_2_4", False)
-def test_load_full_checkpoint_support(tmp_path):
-    """Test that loading non-distributed checkpoints into distributed models requires PyTorch >= 2.4."""
-    strategy = ModelParallelStrategy(parallelize_fn=(lambda m, _: m))
-    model = Mock(spec=nn.Module)
-    model.parameters.return_value = [torch.zeros(2, 1)]
-    path = tmp_path / "full.ckpt"
-    path.touch()
-
-    with pytest.raises(ImportError, match="Loading .* into a distributed model requires PyTorch >= 2.4"), mock.patch(
-        "lightning.fabric.strategies.model_parallel._has_dtensor_modules", return_value=True
-    ):
-        strategy.load_checkpoint(path=path, state={"model": model})
-
-    with pytest.raises(ImportError, match="Loading .* into a distributed model requires PyTorch >= 2.4"), mock.patch(
-        "lightning.fabric.strategies.model_parallel._has_dtensor_modules", return_value=True
-    ):
-        strategy.load_checkpoint(path=path, state=model)
-
-
-@RunIf(min_torch="2.4")
 def test_load_checkpoint_no_state(tmp_path):
     """Test that the ModelParallelStrategy strategy can't load the full state without access to a model instance from
     the user."""

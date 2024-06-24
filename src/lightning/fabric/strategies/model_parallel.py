@@ -70,7 +70,7 @@ class ModelParallelStrategy(ParallelStrategy):
 
     Currently supports up to 2D parallelism. Specifically, it supports the combination of
     Fully Sharded Data-Parallel 2 (FSDP2) with Tensor Parallelism (DTensor). These PyTorch APIs are currently still
-    experimental in PyTorch. Requires PyTorch 2.3 or newer.
+    experimental in PyTorch. Requires PyTorch 2.4 or newer.
 
     Arguments:
         parallelize_fn: A function that applies parallelisms to a module. The strategy will provide the
@@ -458,9 +458,6 @@ def _load_checkpoint(
         return metadata
 
     if _is_full_checkpoint(path):
-        if not _TORCH_GREATER_EQUAL_2_4:
-            raise ImportError("Loading a non-distributed checkpoint into a distributed model requires PyTorch >= 2.4.")
-
         checkpoint = torch.load(path, mmap=True, map_location="cpu")
         _load_raw_module_state(checkpoint.pop(module_key), module, strict=strict)
 
@@ -546,9 +543,6 @@ def _load_raw_module_state(
     from torch.distributed.fsdp import FullyShardedDataParallel as FSDP
 
     if _has_dtensor_modules(module):
-        if not _TORCH_GREATER_EQUAL_2_4:
-            raise ImportError("Loading a non-distributed checkpoint into a distributed model requires PyTorch >= 2.4.")
-
         from torch.distributed.checkpoint.state_dict import StateDictOptions, set_model_state_dict
 
         state_dict_options = StateDictOptions(
